@@ -77,8 +77,12 @@ void loop()
     moviment.forward();
   }
 
-  while(distance<20){
-
+  while(distance<20 || stop){
+  int distance = sensor.getDistance();
+  if (bluetooth.available() > 0) {
+    incomingByte = bluetooth.read();
+  }
+    
     switch(incomingByte){
       case 'B':
         stop = false;
