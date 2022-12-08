@@ -72,12 +72,12 @@ void loop()
     incomingByte = bluetooth.read();
   }
 
-  while(distance>=20) {
+  while(distance>=20 && !stop) {
     distance = sensor.getDistance();
     moviment.forward();
   }
 
-  if(distance<20){
+  while(distance<20){
 
     switch(incomingByte){
       case 'B':
@@ -85,10 +85,12 @@ void loop()
         break;
 
       case 'L':
+        stop = false;
         direction = false;
         break;
 
       case 'R':
+        stop = false;
         direction = true;
         break;
 
