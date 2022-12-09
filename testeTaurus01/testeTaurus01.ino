@@ -5,54 +5,36 @@
 
 DCMotorController motor1 = DCMotorController(5,7,6);
 DCMotorController motor2 = DCMotorController(8,9,10);
-int speed = 130;
+int _speed = 255;
 
 SharpIR sensor( SharpIR::GP2Y0A21YK0F, A1 );
 
 SoftwareSerial bluetooth(2, 3);
 int incomingByte;
 
-class Moviment{
+// Direita = true - Esquerda = false
+bool direction = true, stop = true;
 
-  private:
-   int _speed;
-   DCMotorController leftEngine;
-   DCMotorController rightEngine;
 
-  public:
-    void setSpeed(int speed){
-      _speed = speed;
-    }
-
-    int getSpeed(){
-      return _speed;
-    }
-
-    void setEngines(DCMotorController l, DCMotorController r){
-      leftEngine = l;
-      rightEngine = r;
-    }
-
-    void forward(){
-      leftEngine.writo(speed);
-      rightEngine.write(speed);
-    }
-
-    void left(){
-      leftEngine.write(-speed);
-      rightEngine.write(speed);
-    }
-
-    void right(){
-      leftEngine.write(speed);
-      rightEngine.write(-speed);
-    }
-
-    void stop(){
-      leftEngine.brake();
-      rightEngine.brake();
-    }
+void forward(){
+  motor1.write(255);
+  motor2.write(131);
 }
+
+void left(){
+  motor1.write(-_speed);
+  motor2.write(_speed);
+}
+
+void right(){
+  motor1.write(_speed);
+  motor2.write(-_speed);
+}
+
+void stop(){
+  motor1.brake();
+  motor2.brake();
+  }
 
 
 void setup()
@@ -63,10 +45,6 @@ void setup()
 void loop()
 {
   int distance = sensor.getDistance();
-  // Direita = true - Esquerda = false
-  bool direction = true, stop = false;
-  Moviment moviment;
-  moviment.setEngines(motor1, motor2);
 
   if (bluetooth.available() > 0) {
     incomingByte = bluetooth.read();
@@ -74,11 +52,11 @@ void loop()
 
   while(distance>=20 && !stop) {
     distance = sensor.getDistance();
-    moviment.forward();
+    forward();
   }
 
   while(distance<20 || stop){
-  int distance = sensor.getDistance();
+  distance = sensor.getDistance();
   if (bluetooth.available() > 0) {
     incomingByte = bluetooth.read();
   }
@@ -104,10 +82,10 @@ void loop()
     }
 
     if(!stop){
-      if(direction) moviment.right();
+      if(direction) right();
 
-      else moviment.left();
+      else left();
     }
-    else moviment.stop();
+    else stop();
   }
 }
