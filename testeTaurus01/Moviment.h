@@ -9,7 +9,7 @@ public:
         void forward();
         void left();
         void right();
-        void stop();
+        void _stop();
         
 private:
         int _speed = 255;
