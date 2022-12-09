@@ -14,6 +14,6 @@ public:
 private:
         DCMotorController motor1;
         DCMotorController motor2;
-        int _speed = 255;
+        const int _speed = 255;
         bool direction = true, stop = true;
 };
