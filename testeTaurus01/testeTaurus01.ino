@@ -31,7 +31,7 @@ void right(){
   motor2.write(-_speed);
 }
 
-void stop(){
+void _stop(){
   motor1.brake();
   motor2.brake();
   }
@@ -81,11 +81,11 @@ void loop()
         break;
     }
 
-    if(!stop){
+    if(!_stop){
       if(direction) right();
 
       else left();
     }
-    else stop();
+    else _stop();
   }
 }
